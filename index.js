@@ -1,6 +1,9 @@
-const c = require("ansi-colors");
-
-const log = console.log;
-
-// Combine styled and normal strings
-log(c.red("This is a red string!"));
+const http = require("http");
+const data = require("./app.js");
+http
+  .createServer((req, resp) => {
+    resp.writeHead(200, { "Content-Type": "application/json" });
+    resp.write(JSON.stringify(data));
+    resp.end();
+  })
+  .listen(5000);

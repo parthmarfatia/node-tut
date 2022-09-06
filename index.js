@@ -1,8 +1,20 @@
-const dbConnect = require("./mongodb");
+const express = require("express");
+const multer = require("multer");
+const app = express();
 
-const main = async () => {
-  let data = await dbConnect();
-  data = await data.find().toArray();
-};
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "uploads");
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.filename + "-" + Date.now() + ".jpg");
+    },
+  }),
+}).single("user_file");
 
-main();
+app.post("/upload", upload, (req, resp) => {
+  resp.send("file upload");
+});
+
+app.listen(5000);
